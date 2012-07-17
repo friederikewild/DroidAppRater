@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_rate_title">Rate %s</string>
+    <string name="dialog_rate_message">Enjoy using %s? Would you mind taking a moment to rate it? Thanks for your support!</string>
+    
+    <string name="rating_dialog_button_ok">OK</string>
+    <string name="rating_dialog_button_later">Remind me later</string>
+    <string name="rating_dialog_button_never">No, thank you</string>
+
+</resources>
