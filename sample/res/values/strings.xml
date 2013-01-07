@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">DroidAppRaterDemo</string>
+    <string name="title_activity_main">Rater Demo</string>
+
+    <string name="text_hello">Trigger rating requester after x events / days of usage / launches.</string>
+    <string name="text_sub">Verbose logging on LogCat with Tag \'devmob_apprater\'</string>
+    <string name="button_event">Trigger event</string>
+    
+    <string name="menu_info">Info</string>
+
+</resources>
