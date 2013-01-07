@@ -3,9 +3,14 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <!-- Define the supported android versions -->
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
+
+    <!-- Define the needed permissions. Used to show the app rater lib logs inside the app. -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -17,6 +22,7 @@
         <meta-data android:name="de.devmob.launch_till_rate" android:value="40" />
         <meta-data android:name="de.devmob.days_till_rate" android:value="7" />
         <meta-data android:name="de.devmob.events_till_rate" android:value="6" />
+        
         <!-- Activate the verbose logging for this demo -->
         <meta-data android:name="de.devmob.verbose" android:value="true" />
 
