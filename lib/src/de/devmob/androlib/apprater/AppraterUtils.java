@@ -196,6 +196,7 @@ public class AppraterUtils
         // No rating case it was already dismissed or rated.
         if (AppraterPreferences.isNeverShowApprater(context))
         {
+            Log.i(AppraterUtils.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on start.");
             return false;
         }
 
@@ -237,6 +238,7 @@ public class AppraterUtils
         // No rating case it was already dismissed or rated.
         if (AppraterPreferences.isNeverShowApprater(context))
         {
+            Log.i(AppraterUtils.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on event.");
             return false;
         }
 
