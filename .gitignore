@@ -18,3 +18,5 @@ local.properties
 # User files
 *.keystore
 .DS_Store
+
+*.svn
