@@ -33,8 +33,7 @@ import android.util.Log;
 /**
  * Class to use the app rater component.
  * 
- * @author friederike
- * @version $Rev$ $Date$
+ * @author Friederike Wild
  */
 public class AppraterUtils
 {

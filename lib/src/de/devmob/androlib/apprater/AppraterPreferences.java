@@ -28,8 +28,7 @@ import android.util.Log;
  * 
  * Inspired by [zemariamm]: http://about.me/zemariamm
  * 
- * @author friederike
- * @version $Rev$ $Date$
+ * @author Friederike Wild
  */
 public class AppraterPreferences
 {

@@ -21,8 +21,7 @@ package de.devmob.androlib.apprater;
 /**
  * Interface to be informed about the dialog input.
  * 
- * @author friederike
- * @version $Rev$ $Date$
+ * @author Friederike Wild
  */
 public interface AppraterCallback
 {
