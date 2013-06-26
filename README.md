@@ -31,13 +31,13 @@ Choose one or both of the following moments to have the DroidAppRater check if t
 
 * `onCreate` method of your main `Activity` class
 ```java
-// Let the apprater check on each creation if the rating dialog should be shown:
+// Let the DroidAppRater check on each creation if the rating dialog should be shown:
 AppraterUtils.checkToShowRatingOnStart(this);
 ```
 
 * At any method (on the UI Thread) that is a 'happy' event
 ```java
-// Let the apprater check on each positive event, if the rating dialog should be shown:
+// Let the DroidAppRater check on each positive event, if the rating dialog should be shown:
 AppraterUtils.checkToShowRatingOnEvent(this);
 ```
 
@@ -69,6 +69,12 @@ All three parameters are needed to be fulfilled to show the rating dialog for th
 <meta-data android:name="de.devmob.verbose" android:value="true" />
 ```
 
+
+### Integration Advanced
+
+Sometimes getting the dialog is not enough for your needs. It may for example be of interest to you to log the users response to the rating dialog to included analytic tools.
+
+To be able to do so, one can register a listener using the interface `AppraterCallback` with `AppraterUtils.checkToShowRatingOnStart` and `AppraterUtils.checkToShowRatingOnEvent`. This is demonstrated in the demo application.
 
 
 Developed By

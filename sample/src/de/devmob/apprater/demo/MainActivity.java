@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+import de.devmob.androlib.apprater.AppraterCallback;
 import de.devmob.androlib.apprater.AppraterUtils;
 
 /**
@@ -30,9 +32,12 @@ import de.devmob.androlib.apprater.AppraterUtils;
  */
 public class MainActivity extends Activity
 {
-    public static final String LOG = "devmob_apprater_demo";
+    public static final String   LOG = "devmob_apprater_demo";
 
-    private AppRaterLogReader mBackgroundTask;
+    /** The instance of the background taks to read the logs */
+    private AppRaterLogReader    mBackgroundTask;
+    /** The instance of a callback handler */
+    private DemoAppraterCallback mDemoAppraterCallback;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -43,8 +48,11 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.layout_main);
 
-        // Let the apprater check on each creation if the rating dialog should be shown:
-        AppraterUtils.checkToShowRatingOnStart(this);
+        this.mDemoAppraterCallback = new DemoAppraterCallback();
+
+        // Let the DroidAppRater check on each creation if the rating dialog should be shown:
+//        AppraterUtils.checkToShowRatingOnStart(this);
+        AppraterUtils.checkToShowRatingOnStart(this, mDemoAppraterCallback);
     }
 
     /* (non-Javadoc)
@@ -77,11 +85,13 @@ public class MainActivity extends Activity
     {
         switch(item.getItemId())
         {
+            /*
             case R.id.menu_settings:
             {
 
                 return true;
             }
+            */
             case R.id.menu_info:
             {
                 showDialog(R.id.dialog_info);
@@ -130,8 +140,9 @@ public class MainActivity extends Activity
      */
     public void onButtonClick(View view)
     {
-        // Let the apprater check on each positive event, if the rating dialog should be shown:
-        AppraterUtils.checkToShowRatingOnEvent(this);
+        // Let the DroidAppRater check on each positive event, if the rating dialog should be shown:
+//        AppraterUtils.checkToShowRatingOnEvent(this);
+        AppraterUtils.checkToShowRatingOnEvent(this, mDemoAppraterCallback);
 
         updateLogging();
     }
@@ -221,6 +232,48 @@ public class MainActivity extends Activity
             }
             
             isRunning = false;
+        }
+    }
+
+    /**
+     * Callback handler to watch the user interaction with the DroidAppRater.
+     * For demo purposes this just triggers a toast after any of the dialog input.
+     * 
+     * @author Friederike Wild
+     */
+    public class DemoAppraterCallback implements AppraterCallback
+    {
+        /* (non-Javadoc)
+         * @see de.devmob.androlib.apprater.AppraterCallback#processNever()
+         */
+        @Override
+        public void processNever()
+        {
+            // Do something useful here. e.g. inform analytics tracker
+
+            Toast.makeText(MainActivity.this, "Callback - User doesn't want to rate.", Toast.LENGTH_SHORT).show();
+        }
+    
+        /* (non-Javadoc)
+         * @see de.devmob.androlib.apprater.AppraterCallback#processRate()
+         */
+        @Override
+        public void processRate()
+        {
+            // Do something useful here. e.g. inform analytics tracker
+
+            Toast.makeText(MainActivity.this, "Callback - User is rating now.", Toast.LENGTH_SHORT).show();
+        }
+    
+        /* (non-Javadoc)
+         * @see de.devmob.androlib.apprater.AppraterCallback#processRemindMe()
+         */
+        @Override
+        public void processRemindMe()
+        {
+            // Do something useful here. e.g. inform analytics tracker
+
+            Toast.makeText(MainActivity.this, "Callback - User is willing to rate later.", Toast.LENGTH_SHORT).show();
         }
     }
 }
