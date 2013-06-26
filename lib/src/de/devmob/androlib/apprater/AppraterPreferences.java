@@ -26,7 +26,8 @@ import android.util.Log;
 /**
  * Class to handle the apprater specific preferences.
  * 
- * Inspired by [zemariamm]: http://about.me/zemariamm
+ * Inspired Arash Payan http://arashpayan.com/blog/2009/09/07/presenting-appirater 
+ * and José Moura with https://github.com/zemariamm/Appirater-for-Android
  * 
  * @author Friederike Wild
  */

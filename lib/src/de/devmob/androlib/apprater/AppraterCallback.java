@@ -19,15 +19,24 @@
 package de.devmob.androlib.apprater;
 
 /**
- * Interface to be informed about the dialog input.
+ * Interface to be informed about the app rater dialog input.
  * 
  * @author Friederike Wild
  */
 public interface AppraterCallback
 {
+    /**
+     * Callback method when the user chose to not rate and be never asked again.
+     */
     public void processNever();
-    
+
+    /**
+     * Callback method when the user chose to proceed and rate now.
+     */
     public void processRate();
-    
+
+    /**
+     * Callback method when the user chose to not rate now but accepts to be asked later.
+     */
     public void processRemindMe();
 }

@@ -32,27 +32,29 @@ import android.util.Log;
 
 /**
  * Class to use the app rater component.
+ * All available meta keys that can be used to configure the component via the apps AndroidManifest.xml are provided here.
+ * 
  * 
  * @author Friederike Wild
  */
 public class AppraterUtils
 {
     /** 
-     * Meta key to configure the amount of app launches, till the rating dialog should be shown for the first time.
+     * Meta key to configure the amount of app launches, till the rating dialog should be shown for the first time / next time after postponing.
      *  
      * <meta-data android:name="de.devmob.launch_till_rate" android:value="4" />
      */
     public static final String META_CONFIG_LAUNCH_BEFORE_RATE = "de.devmob.launch_till_rate";
 
     /** 
-     * Meta key to configure the amount of days after install, till the rating dialog should be shown for the first time.
+     * Meta key to configure the amount of days after installation, till the rating dialog should be shown for the first time / next time after postponing.
      *  
      * <meta-data android:name="de.devmob.days_till_rate" android:value="4" />
      */
     public static final String META_CONFIG_DAYS_BEFORE_RATE = "de.devmob.days_till_rate";
 
     /** 
-     * Meta key to configure the amount of days after install, till the rating dialog should be shown for the first time.
+     * Meta key to configure the amount of events after install, till the rating dialog should be shown for the first time / next time after postponing.
      *  
      * <meta-data android:name="de.devmob.events_till_rate" android:value="2" />
      */
@@ -84,7 +86,17 @@ public class AppraterUtils
      * Method to call from the onCreate method of the first activity that is shown.
      * 
      * @param context The current activity context
-     * @param callbackHandler
+     */
+    public static void checkToShowRatingOnStart(final Context context)
+    {
+        checkToShowRatingOnStart(context, null);
+    }
+
+    /**
+     * Method to call from the onCreate method of the first activity that is shown.
+     * 
+     * @param context The current activity context
+     * @param callbackHandler The optional callback object to be noticed about the chosen dialog option.
      */
     public static void checkToShowRatingOnStart(final Context context, final AppraterCallback callbackHandler)
     {
@@ -99,7 +111,18 @@ public class AppraterUtils
      * to the user happened.
      * 
      * @param context The current activity context
-     * @param callbackHandler
+     */
+    public static void checkToShowRatingOnEvent(final Context context)
+    {
+        checkToShowRatingOnEvent(context, null);
+    }
+
+    /**
+     * Method to call from any point during the application when something positive
+     * to the user happened.
+     * 
+     * @param context The current activity context
+     * @param callbackHandler The optional callback object to be noticed about the chosen dialog option.
      */
     public static void checkToShowRatingOnEvent(final Context context, final AppraterCallback callbackHandler)
     {
@@ -270,7 +293,7 @@ public class AppraterUtils
      * and uses the texts as given in the locale resources.  
      * 
      * @param context The current activity context
-     * @param callbackHandler
+     * @param callbackHandler The optional callback object to be noticed about the chosen dialog option. Past null if not interested.
      */
     private static void showAppraterDialog(final Context context, final AppraterCallback callbackHandler)
     {
