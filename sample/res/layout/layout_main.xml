@@ -62,7 +62,7 @@
 	        
 	        android:lineSpacingExtra="2sp"
 	        
-	        android:text="-"
+	        android:text=""
 	        />
 
 </RelativeLayout>

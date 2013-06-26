@@ -15,16 +15,20 @@ import android.widget.TextView;
 import de.devmob.androlib.apprater.AppraterUtils;
 
 /**
- * Main activity of the demo application
+ * Simple main activity of the demo application to show the usage of the
+ * DroidAppRater utils.
+ * The application enables logging of the library and fetches the logs
+ * to present them inside the app. This way one can directly comprehend all
+ * ongoing checks.
  * 
  * @author friederike.wild
  */
 public class MainActivity extends Activity
 {
     public static final String LOG = "devmob_apprater_demo";
-    
+
     private AppRaterLogReader mBackgroundTask;
-    
+
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
@@ -32,10 +36,10 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_main);
+        this.setContentView(R.layout.layout_main);
 
         // Let the apprater check on each creation if the rating dialog should be shown:
-        AppraterUtils.checkToShowRatingOnStart(this, null);
+        AppraterUtils.checkToShowRatingOnStart(this);
     }
 
     /* (non-Javadoc)
@@ -66,22 +70,31 @@ public class MainActivity extends Activity
     public void onButtonClick(View view)
     {
         // Let the apprater check on each positive event, if the rating dialog should be shown:
-        AppraterUtils.checkToShowRatingOnEvent(this, null);
+        AppraterUtils.checkToShowRatingOnEvent(this);
 
         updateLogging();
     }
-    
-    
+
+    /**
+     * Private method to start the background task to fetch
+     * the logging. Trigger when something has changed.
+     */
     private void updateLogging()
     {
+        // Safety-check if already running
         if (mBackgroundTask == null || !mBackgroundTask.isRunning)
         {
             mBackgroundTask = new AppRaterLogReader();
             mBackgroundTask.execute();
         }
     }
-    
 
+    /**
+     * Private util class to read all logs from the DroidAppRater in the background
+     * and write the result with latest first in the text view.
+     * 
+     * @author Friederike Wild
+     */
     private class AppRaterLogReader extends AsyncTask<Void, Void, String>
     {
         public boolean isRunning = false;
@@ -93,13 +106,15 @@ public class MainActivity extends Activity
             
             try
             {
-                String baseCommand = "logcat -d -v raw";
-
-                baseCommand += " devmob_apprater:I"; // Filter only the used Lib Tag
-                baseCommand += " MyApp:D "; // Info for my app
-                baseCommand += " *:S "; // Silence others
+                // Put up the logcat filtering command
+                StringBuffer baseCommandBuffer = new StringBuffer(); 
+                baseCommandBuffer.append("logcat -d -v raw ");
+                baseCommandBuffer.append(AppraterUtils.LOG_TAG); // Filter only the used Library Logging Tag
+                baseCommandBuffer.append(":I"); // Filter only the info debug level
+                baseCommandBuffer.append(" MyApp:D "); // Info for my app
+                baseCommandBuffer.append(" *:S "); // Silence others
                 
-                Process process = Runtime.getRuntime().exec(baseCommand);
+                Process process = Runtime.getRuntime().exec(baseCommandBuffer.toString());
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
@@ -139,6 +154,7 @@ public class MainActivity extends Activity
         {
             if (result != null)
             {
+                // Update the text view to show the latest log history
                 TextView textView = (TextView) findViewById(R.id.textLog);
                 textView.setText(result);
             }
