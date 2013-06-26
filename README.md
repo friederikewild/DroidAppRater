@@ -7,9 +7,7 @@ The idea is to prompt your users for a review when they are most likely to be ha
 
 As fallback or when there are no defined happy moments, the rating dialog will show up after a **defined amount of app starts**, too. To not trigger it to early and annoy a new user the **days since installation** are checked as well. Both triggers can be configured.
 
-The DroidAppRater is inspired by the Appirater by Arash Payan [Appirater for iPhone](https://github.com/arashpayan/appirater)
-
-Find more about his thoughts about including a rating dialog at [his blog](http://arashpayan.com/blog/2009/09/07/presenting-appirater).
+The DroidAppRater is inspired by the Appirater by Arash Payan [Appirater for iPhone](https://github.com/arashpayan/appirater). Find out more about his thoughts about including a rating dialog at [his blog](http://arashpayan.com/blog/2009/09/07/presenting-appirater).
 
 
 Project overview
@@ -32,17 +30,15 @@ Import the DroidAppRater project to your workspace and add a reference to it fro
 Choose one or both of the following moments to have the DroidAppRater check if the rating dialog should be shown to the user at this point of usage:
 
 * `onCreate` method of your main `Activity` class
-
 ```java
 // Let the apprater check on each creation if the rating dialog should be shown:
 AppraterUtils.checkToShowRatingOnStart(this);
 ```
 
 * At any method (on the UI Thread) that is a 'happy' event
-
 ```java
 // Let the apprater check on each positive event, if the rating dialog should be shown:
-        AppraterUtils.checkToShowRatingOnEvent(this);
+AppraterUtils.checkToShowRatingOnEvent(this);
 ```
 
 
@@ -54,26 +50,21 @@ Configure the three possible parameters as needed by adding the following entrie
 All three parameters are needed to be fulfilled to show the rating dialog for the first time since the first time the app was used or since the last time the user postponed answering.
 
 * Amount of app launches. Default value: 4
-
-
 ```xml
-        <meta-data android:name="de.devmob.launch_till_rate" android:value="40" />
+<meta-data android:name="de.devmob.launch_till_rate" android:value="40" />
 ```
 
 * Amount of days. Default value: 4
-
 ```xml
-        <meta-data android:name="de.devmob.days_till_rate" android:value="7" />
+<meta-data android:name="de.devmob.days_till_rate" android:value="7" />
 ```
 
 * Amount of events. Default value: 2
-
 ```xml
-        <meta-data android:name="de.devmob.events_till_rate" android:value="6" />
+<meta-data android:name="de.devmob.events_till_rate" android:value="6" />
 ```
 
 * For debugging purposes activating logging of the DroidAppRater is possible
-
 ```xml
 <meta-data android:name="de.devmob.verbose" android:value="true" />
 ```
