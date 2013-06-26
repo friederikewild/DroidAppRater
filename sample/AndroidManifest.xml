@@ -1,12 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.devmob.apprater.demo"
+    android:installLocation="preferExternal"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <!-- Define the supported android versions -->
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+    <uses-sdk android:targetSdkVersion="17" android:minSdkVersion="8" />
 
     <!-- Define the needed permissions. Used to show the app rater lib logs inside the app. -->
     <uses-permission android:name="android.permission.READ_LOGS" />
