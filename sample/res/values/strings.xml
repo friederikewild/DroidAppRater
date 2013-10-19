@@ -6,8 +6,13 @@
     <string name="text_hello">Trigger rating requester after x events / days of usage / launches.</string>
     <string name="text_sub">Verbose logging on LogCat with Tag \'devmob_apprater\'</string>
     <string name="button_event">Trigger event</string>
+
+    <string name="infoOnVoting">Callback - User is rating now.</string>
+    <string name="infoOnLater">Callback - User is asked to rate later again.</string>
+    <string name="infoOnNever">Callback - User doesn\'t want to rate.</string>
     
-    <string name="menu_settings">Settings</string>
+    <string name="menu_new_version">On new Version</string>
+    <string name="menu_reset">Reset AppRater</string>
     <string name="menu_info">Info</string>
 
     <string name="text_info">This app demonstrates the usage of the &lt;br />

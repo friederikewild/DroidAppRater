@@ -100,13 +100,18 @@ public class MainActivity extends Activity
     {
         switch(item.getItemId())
         {
-            /*
-            case R.id.menu_settings:
+            case R.id.menu_new_version:
             {
-
+                appRater.resetVotingsIfNotRatingDeclined();
+                updateLogging();
                 return true;
             }
-            */
+            case R.id.menu_reset:
+            {
+                appRater.resetAllStoredPreferences();
+                updateLogging();
+                return true;
+            }
             case R.id.menu_info:
             {
                 showDialog(R.id.dialog_info);
@@ -265,7 +270,7 @@ public class MainActivity extends Activity
         {
             // Do something useful here. e.g. inform analytics tracker
 
-            Toast.makeText(MainActivity.this, "Callback - User doesn't want to rate.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getString(R.string.infoOnNever), Toast.LENGTH_SHORT).show();
         }
     
         /* (non-Javadoc)
@@ -276,7 +281,7 @@ public class MainActivity extends Activity
         {
             // Do something useful here. e.g. inform analytics tracker
 
-            Toast.makeText(MainActivity.this, "Callback - User is rating now.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getString(R.string.infoOnVoting), Toast.LENGTH_SHORT).show();
         }
     
         /* (non-Javadoc)
@@ -287,7 +292,7 @@ public class MainActivity extends Activity
         {
             // Do something useful here. e.g. inform analytics tracker
 
-            Toast.makeText(MainActivity.this, "Callback - User is willing to rate later.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getString(R.string.infoOnLater), Toast.LENGTH_SHORT).show();
         }
     }
 }
