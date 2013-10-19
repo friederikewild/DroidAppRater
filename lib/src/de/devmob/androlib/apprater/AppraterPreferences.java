@@ -34,119 +34,65 @@ import android.util.Log;
 public class AppraterPreferences
 {
     /** The key to the shared preferences that handles storage of the app rater status quo. */
-    private static final String KEY_PREFERENCES         = "de.devmob.APPRATER";
+    private static final String KEY_PREFERENCES       = "de.devmob.APPRATER";
 
     /** Key to store the date to compare how long the user has the app. */
-    private static final String PREF_LONG_START_DATE    = "PREF_LONG_START_DATE";
+    private static final String PREF_LONG_START_DATE  = "PREF_LONG_START_DATE";
     /** Key to store how often the app was opened */
-    private static final String PREF_INT_COUNT_OPEN     = "PREF_INT_COUNT_OPEN";
+    private static final String PREF_INT_COUNT_OPEN   = "PREF_INT_COUNT_OPEN";
     /** Key to store how often the positive event was triggered. */
-    private static final String PREF_INT_COUNT_EVENTS   = "PREF_INT_COUNT_EVENTS";
+    private static final String PREF_INT_COUNT_EVENTS = "PREF_INT_COUNT_EVENTS";
     /** Key to store if app rating was done for this version */
-    private static final String PREF_BOOL_RATED_VERSION = "PREF_BOOL_RATED_VERSION";
+    private static final String PREF_BOOL_RATED       = "PREF_BOOL";
     /** Key to store if app rating was denied */
-    private static final String PREF_BOOL_NEVERRATE     = "PREF_BOOL_NEVERRATE";
+    private static final String PREF_BOOL_NEVERRATE   = "PREF_BOOL_NEVERRATE";
 
-    /**
-     * Util method to get the shared preferences that hold the app rater usage status.
-     * 
-     * @param context
-     * @return
-     */
-    public static SharedPreferences getPreferences(Context context)
+    private SharedPreferences preferences;
+    private boolean verbose;
+
+    public AppraterPreferences(Context context, boolean verbose)
     {
+        // Get the shared preferences that hold the app rater usage status.
         int mode = Activity.MODE_PRIVATE;
-        return context.getSharedPreferences(KEY_PREFERENCES, mode);
+        this.preferences = context.getSharedPreferences(KEY_PREFERENCES, mode);
+        this.verbose = verbose;
     }
 
     /**
      * Check if rating was already done or denied. 
      * 
-     * @param context
      * @return
      */
-    public static boolean isRatingRequestDeactivated(Context context)
+    public boolean isRatingRequestDeactivated()
     {
-        SharedPreferences prefs = getPreferences(context);
-        boolean userRated = prefs.getBoolean(PREF_BOOL_RATED_VERSION, false);
+        SharedPreferences prefs = preferences;
+        boolean userRated = prefs.getBoolean(PREF_BOOL_RATED, false);
         boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_NEVERRATE, false);
         return userRated || userChoseNeverRate;
     }
 
-    public static void storeRated(Context context)
+    public boolean isRatingRequestDeclined()
     {
-        SharedPreferences.Editor editor = getPreferences(context).edit();
-        editor.putBoolean(PREF_BOOL_RATED_VERSION, true);
-        editor.commit();
-
-        if (Apprater.shouldLog(context))
-        {            
-            Log.i(Apprater.LOG_TAG, "Info: Marked as rated!");
-        }
-    }
-    
-    /**
-     * Reset the app rating counter and settings to automatically ask for rating later again. 
-     * 
-     * @param context
-     */
-    public static void resetToRateLater(Context context)
-    {
-        SharedPreferences.Editor editor = getPreferences(context).edit();
-        // Reset count starts and first start date
-        editor.putInt(PREF_INT_COUNT_OPEN, 0);
-        editor.putInt(PREF_INT_COUNT_EVENTS, 0);
-        // Reset the day to restart comparing the days gone by
-        editor.putLong(PREF_LONG_START_DATE, System.currentTimeMillis());
-
-        editor.commit();
-
-        if (Apprater.shouldLog(context))
-        {            
-            Log.i(Apprater.LOG_TAG, "Info: Marked to ask later for rating!");
-        }
-    }
-
-    /**
-     * Store to never ask for a rating again.
-     * 
-     * @param context
-     */
-    public static void markNeverRate(Context context)
-    {
-        SharedPreferences.Editor editor = getPreferences(context).edit();
-
-        // Remove all stored keys to clean up
-        editor.remove(PREF_INT_COUNT_OPEN);
-        editor.remove(PREF_INT_COUNT_EVENTS);
-        editor.remove(PREF_LONG_START_DATE);
-
-        // Store to never ask for rating again
-        editor.putBoolean(PREF_BOOL_NEVERRATE, true);
-        editor.commit();
-
-        if (Apprater.shouldLog(context))
-        {            
-            Log.i(Apprater.LOG_TAG, "Info: Marked to never show rating dialog again!");
-        }
+        SharedPreferences prefs = preferences;
+        boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_NEVERRATE, false);
+        return userChoseNeverRate;
     }
 
     /**
      * Get the stored start date.
      * This is the first date in millis the app was launched on,
-     * or the date the user decied to be asked later.
+     * or the date the user decided to be asked later.
      * 
-     * @param context The current activity context
      * @return The date in millis to compare current date with
      */
-    public static long getStoredStartDate(Context context)
+    public long getStoredStartDate()
     {
-        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences prefs = preferences;
         long storedDate = prefs.getLong(PREF_LONG_START_DATE, 0);
         
         if (storedDate == 0)
         {
-            SharedPreferences.Editor editor = getPreferences(context).edit();
+            SharedPreferences.Editor editor = preferences.edit();
             editor.putLong(PREF_LONG_START_DATE, System.currentTimeMillis());
             editor.commit();
         }
@@ -158,13 +104,12 @@ public class AppraterPreferences
      * Get the current count of opening the application.
      * Calling this method increases the counter before returning if the increase parameter is true.
      * 
-     * @param context The current activity context
      * @param increase Flag if the counter should be increased before returning.
      * @return The count of new app starts.
      */
-    public static int getCountOpened(Context context, boolean increase)
+    public int getCountOpened(boolean increase)
     {
-        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences prefs = preferences;
         int count = prefs.getInt(PREF_INT_COUNT_OPEN, 0);
 
         if (increase)
@@ -173,13 +118,13 @@ public class AppraterPreferences
             count++;
         }
 
-        if (Apprater.shouldLog(context))
+        if (this.verbose)
         {            
             Log.i(Apprater.LOG_TAG, "Current count open: " + count);
         }
 
         // Store updated count
-        SharedPreferences.Editor editor = getPreferences(context).edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(PREF_INT_COUNT_OPEN, count);
         editor.commit();
 
@@ -190,13 +135,12 @@ public class AppraterPreferences
      * Get the current count of positive events logged in the application.
      * Calling this method increases the counter before returning if the increase parameter is true.
      * 
-     * @param context The current activity context
      * @param increase Flag if the counter should be increased before returning.
      * @return The count of positive events.
      */
-    public static int getCountEvents(Context context, boolean increase)
+    public int getCountEvents(boolean increase)
     {
-        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences prefs = preferences;
         int count = prefs.getInt(PREF_INT_COUNT_EVENTS, 0);
 
         if (increase)
@@ -205,16 +149,92 @@ public class AppraterPreferences
             count++;
         }
 
-        if (Apprater.shouldLog(context))
+        if (this.verbose)
         {            
             Log.i(Apprater.LOG_TAG, "Current count events: " + count);
         }
 
         // Store updated count
-        SharedPreferences.Editor editor = getPreferences(context).edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(PREF_INT_COUNT_EVENTS, count);
         editor.commit();
 
         return count;
+    }
+
+    protected void reset()
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+
+        // Remove all stored keys to clean up
+        editor.remove(PREF_INT_COUNT_OPEN);
+        editor.remove(PREF_INT_COUNT_EVENTS);
+        editor.remove(PREF_LONG_START_DATE);
+        editor.remove(PREF_BOOL_RATED);
+        editor.remove(PREF_BOOL_NEVERRATE);
+        editor.commit();
+
+        if (this.verbose)
+        {            
+            Log.i(Apprater.LOG_TAG, "Info: Reset all stored preferences!");
+        }
+    }
+
+    /**
+     * Store that user rated - don't ask until further notice
+     * e.g. about major version update.
+     */
+    protected void storeRated()
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PREF_BOOL_RATED, true);
+        editor.commit();
+
+        if (this.verbose)
+        {            
+            Log.i(Apprater.LOG_TAG, "Info: Marked as rated!");
+        }
+    }
+
+    /**
+     * Reset the app rating counter and settings to automatically ask for rating later again. 
+     */
+    protected void storeToRateLater()
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+        // Reset count starts and first start date
+        editor.putInt(PREF_INT_COUNT_OPEN, 0);
+        editor.putInt(PREF_INT_COUNT_EVENTS, 0);
+        // Reset the day to restart comparing the days gone by
+        editor.putLong(PREF_LONG_START_DATE, System.currentTimeMillis());
+
+        editor.commit();
+
+        if (this.verbose)
+        {            
+            Log.i(Apprater.LOG_TAG, "Info: Marked to ask later for rating!");
+        }
+    }
+
+    /**
+     * Store to never ask for a rating again.
+     */
+    protected void storeRatingDeclined()
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+
+        // Remove all stored keys to clean up
+        editor.remove(PREF_INT_COUNT_OPEN);
+        editor.remove(PREF_INT_COUNT_EVENTS);
+        editor.remove(PREF_LONG_START_DATE);
+
+        // Store to never ask for rating again
+        editor.putBoolean(PREF_BOOL_NEVERRATE, true);
+        editor.commit();
+
+        if (this.verbose)
+        {            
+            Log.i(Apprater.LOG_TAG, "Info: Marked to never show rating dialog again!");
+        }
     }
 }

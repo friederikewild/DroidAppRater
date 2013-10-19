@@ -34,7 +34,6 @@ import android.util.Log;
  * Class to use the app rater component.
  * All available meta keys that can be used to configure the component via the apps AndroidManifest.xml are provided here.
  * 
- * 
  * @author Friederike Wild
  */
 public class Apprater
@@ -44,65 +43,79 @@ public class Apprater
      *  
      * <meta-data android:name="de.devmob.launch_till_rate" android:value="4" />
      */
-    public static final String META_CONFIG_LAUNCH_BEFORE_RATE = "de.devmob.launch_till_rate";
+    public static final String   META_CONFIG_LAUNCH_BEFORE_RATE = "de.devmob.launch_till_rate";
 
     /** 
      * Meta key to configure the amount of days after installation, till the rating dialog should be shown for the first time / next time after postponing.
      *  
      * <meta-data android:name="de.devmob.days_till_rate" android:value="4" />
      */
-    public static final String META_CONFIG_DAYS_BEFORE_RATE = "de.devmob.days_till_rate";
+    public static final String   META_CONFIG_DAYS_BEFORE_RATE   = "de.devmob.days_till_rate";
 
     /** 
      * Meta key to configure the amount of events after install, till the rating dialog should be shown for the first time / next time after postponing.
      *  
      * <meta-data android:name="de.devmob.events_till_rate" android:value="2" />
      */
-    public static final String META_CONFIG_EVENTS_BEFORE_RATE = "de.devmob.events_till_rate";
+    public static final String   META_CONFIG_EVENTS_BEFORE_RATE = "de.devmob.events_till_rate";
 
     /** 
      * Meta key to configure if app rating should log.
      *  
      * <meta-data android:name="de.devmob.verbose" android:value="true" />
      */
-    public static final String META_CONFIG_VERBOSE = "de.devmob.verbose";
+    public static final String   META_CONFIG_VERBOSE            = "de.devmob.verbose";
 
     /** Logging tag for the app rater component */
-    public static final String LOG_TAG = "devmob_apprater";
+    public static final String   LOG_TAG                        = "devmob_apprater";
 
     /** Flag to turn of the app rater is wanted */
-    private static final boolean ENABLE_APPRATER = true;
+    private static final boolean ENABLE_APPRATER                = true;
 
     /** Default count before the rating dialog should be shown. */
-    private static final int DEFAULT_LAUNCH_BEFORE_RATE = 4;
+    private static final int     DEFAULT_LAUNCH_BEFORE_RATE     = 4;
 
     /** Default days before the rating dialog should be shown. */
-    private static final int DEFAULT_DAYS_BEFORE_RATE = 4;
-    
-    /** Default count of positive events before the rating dialog should be shown. */
-    private static final int DEFAULT_EVENTS_BEFORE_RATE = 2;
+    private static final int     DEFAULT_DAYS_BEFORE_RATE       = 4;
 
-    /**
-     * Method to call from the onCreate method of the first activity that is shown.
-     * 
-     * @param context The current activity context
-     */
-    public static void checkToShowRatingOnStart(final Context context)
+    /** Default count of positive events before the rating dialog should be shown. */
+    private static final int     DEFAULT_EVENTS_BEFORE_RATE     = 2;
+
+    private Context              context;
+    /** The optional callback object to be noticed about the chosen dialog option. Past null if not interested. */
+    private AppraterCallback     callbackHandler                = null;
+    private AppraterPreferences  preferences;
+
+    public Apprater(Context context)
     {
-        checkToShowRatingOnStart(context, null);
+        this.setContext(context);
+    }
+
+    public void setContext(Context context)
+    {
+        this.context = context;
+        this.preferences = new AppraterPreferences(context, shouldLog());
+    }
+
+    public void invalidateContext()
+    {
+        this.context = null;
+        this.preferences = null;
+    }
+
+    public void setAppraterCallback(AppraterCallback callbackHandler)
+    {
+        this.callbackHandler = callbackHandler;
     }
 
     /**
      * Method to call from the onCreate method of the first activity that is shown.
-     * 
-     * @param context The current activity context
-     * @param callbackHandler The optional callback object to be noticed about the chosen dialog option.
      */
-    public static void checkToShowRatingOnStart(final Context context, final AppraterCallback callbackHandler)
+    public void checkToShowRatingOnStart()
     {
-        if (shouldAppShowRatingOnStart(context) && ENABLE_APPRATER)
+        if (shouldAppShowRatingOnStart() && ENABLE_APPRATER)
         {
-            showAppraterDialog(context, callbackHandler);
+            showAppraterDialog();
         }
     }
 
@@ -110,39 +123,46 @@ public class Apprater
      * Method to call from any point during the application when something positive
      * to the user happened.
      * 
-     * @param context The current activity context
      */
-    public static void checkToShowRatingOnEvent(final Context context)
+    public void checkToShowRatingOnEvent()
     {
-        checkToShowRatingOnEvent(context, null);
+        if (shouldAppShowRatingOnEvent() && ENABLE_APPRATER)
+        {
+            showAppraterDialog();
+        }
     }
 
     /**
-     * Method to call from any point during the application when something positive
-     * to the user happened.
-     * 
-     * @param context The current activity context
-     * @param callbackHandler The optional callback object to be noticed about the chosen dialog option.
+     * Reset all rater related preferences.
+     * This also resets a previous show-never answer.
      */
-    public static void checkToShowRatingOnEvent(final Context context, final AppraterCallback callbackHandler)
+    public void resetAllStoredPreferences()
     {
-        if (shouldAppShowRatingOnEvent(context) && ENABLE_APPRATER)
+        preferences.reset();
+    }
+
+    /**
+     * Reset all rater related preferences.
+     * Honors users previous decision to not rate.
+     */
+    public void resetVotingsIfNotRatingDeclined()
+    {
+        if (!preferences.isRatingRequestDeclined())
         {
-            showAppraterDialog(context, callbackHandler);
+            resetAllStoredPreferences();
         }
     }
 
     /**
      * Get the configured amount of app launches before the rating dialog should be shown.
      * 
-     * @param context The current activity context
      * @return
      */
-    private static int getConfigLaunchBeforeRateCount(Context context)
+    private int getConfigLaunchBeforeRateCount()
     {
-        int launchBeforeRate = getConfigurationIntOrDefaultValue(context, META_CONFIG_LAUNCH_BEFORE_RATE, DEFAULT_LAUNCH_BEFORE_RATE);
+        int launchBeforeRate = getConfigurationIntOrDefaultValue(META_CONFIG_LAUNCH_BEFORE_RATE, DEFAULT_LAUNCH_BEFORE_RATE);
 
-        if (Apprater.shouldLog(context))
+        if (shouldLog())
         {            
             Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + launchBeforeRate + " launches.");
         }
@@ -153,14 +173,13 @@ public class Apprater
     /**
      * Get the configured amount of days before the rating dialog should be shown.
      * 
-     * @param context The current activity context
      * @return
      */
-    private static int getConfigDaysBeforeRateCount(Context context)
+    private int getConfigDaysBeforeRateCount()
     {
-        int daysBeforeRate = getConfigurationIntOrDefaultValue(context, META_CONFIG_DAYS_BEFORE_RATE, DEFAULT_DAYS_BEFORE_RATE);
+        int daysBeforeRate = getConfigurationIntOrDefaultValue(META_CONFIG_DAYS_BEFORE_RATE, DEFAULT_DAYS_BEFORE_RATE);
 
-        if (Apprater.shouldLog(context))
+        if (shouldLog())
         {            
             Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " days.");
         }
@@ -171,14 +190,13 @@ public class Apprater
     /**
      * Get the configured amount of positive events before the rating dialog should be shown.
      * 
-     * @param context The current activity context
      * @return
      */
-    private static int getConfigEventsBeforeRateCount(Context context)
+    private int getConfigEventsBeforeRateCount()
     {
-        int daysBeforeRate = getConfigurationIntOrDefaultValue(context, META_CONFIG_EVENTS_BEFORE_RATE, DEFAULT_EVENTS_BEFORE_RATE);
+        int daysBeforeRate = getConfigurationIntOrDefaultValue(META_CONFIG_EVENTS_BEFORE_RATE, DEFAULT_EVENTS_BEFORE_RATE);
 
-        if (Apprater.shouldLog(context))
+        if (shouldLog())
         {            
             Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " positive events.");
         }
@@ -190,12 +208,11 @@ public class Apprater
      * Util method to get a configured int value from the application bundle information defined by the 
      * given key. In case the entry doesn't exist or anyhting goes wrong, the defaultValue is returned.
      * 
-     * @param context
      * @param configKey
      * @param defaultValue
      * @return
      */
-    private static int getConfigurationIntOrDefaultValue(Context context, String configKey, int defaultValue)
+    private int getConfigurationIntOrDefaultValue(String configKey, int defaultValue)
     {
         int returnValue = defaultValue;
 
@@ -223,13 +240,12 @@ public class Apprater
      * Check if the app rating should be shown.
      * Checks the status of the app launches and the previous app rating usage.
      * 
-     * @param context The current activity context
      * @return Flag if the dialog should be shown.
      */
-    private static boolean shouldAppShowRatingOnStart(Context context)
+    private boolean shouldAppShowRatingOnStart()
     {
         // No rating case it was already dismissed or rated.
-        if (AppraterPreferences.isRatingRequestDeactivated(context))
+        if (preferences.isRatingRequestDeactivated())
         {
             Log.i(Apprater.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on start.");
             return false;
@@ -237,22 +253,22 @@ public class Apprater
 
         // Check if enough days gone by
         long currentTime = System.currentTimeMillis();
-        long storedTime = AppraterPreferences.getStoredStartDate(context);
+        long storedTime = preferences.getStoredStartDate();
         long daysPastSinceStart= ((currentTime - storedTime) / (1000 * 60 * 60 * 24));
 
-        if (Apprater.shouldLog(context))
+        if (shouldLog())
         {            
-            Log.i(Apprater.LOG_TAG, "Apprater comparison " + daysPastSinceStart + " past ? >= " + getConfigDaysBeforeRateCount(context));
+            Log.i(Apprater.LOG_TAG, "Apprater comparison " + daysPastSinceStart + " past ? >= " + getConfigDaysBeforeRateCount());
         }
 
-        if (daysPastSinceStart < getConfigDaysBeforeRateCount(context))
+        if (daysPastSinceStart < getConfigDaysBeforeRateCount())
         {
             return false;
         }
 
         // Check the usage
-        int countOpened = AppraterPreferences.getCountOpened(context, true);
-        if (countOpened % getConfigLaunchBeforeRateCount(context) == 0)
+        int countOpened = preferences.getCountOpened(true);
+        if (countOpened % getConfigLaunchBeforeRateCount() == 0)
         {
             return true;
         }
@@ -265,21 +281,20 @@ public class Apprater
      * Check if the app rating should be shown.
      * Checks the status of the app events and the previous app rating usage.
      * 
-     * @param context The current activity context
      * @return Flag if the dialog should be shown.
      */
-    private static boolean shouldAppShowRatingOnEvent(Context context)
+    private boolean shouldAppShowRatingOnEvent()
     {
         // No rating case it was already dismissed or rated.
-        if (AppraterPreferences.isRatingRequestDeactivated(context))
+        if (preferences.isRatingRequestDeactivated())
         {
             Log.i(Apprater.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on event.");
             return false;
         }
 
         // Check the usage
-        int countEvents = AppraterPreferences.getCountEvents(context, true);
-        if (countEvents % getConfigEventsBeforeRateCount(context) == 0)
+        int countEvents = preferences.getCountEvents(true);
+        if (countEvents % getConfigEventsBeforeRateCount() == 0)
         {
             return true;
         }
@@ -291,11 +306,8 @@ public class Apprater
     /**
      * Create and show the app rating dialog. This fetches the package name from the context
      * and uses the texts as given in the locale resources.  
-     * 
-     * @param context The current activity context
-     * @param callbackHandler The optional callback object to be noticed about the chosen dialog option. Past null if not interested.
      */
-    private static void showAppraterDialog(final Context context, final AppraterCallback callbackHandler)
+    private void showAppraterDialog()
     {
         AlertDialog.Builder builderInvite = new AlertDialog.Builder(context);
 
@@ -325,7 +337,7 @@ public class Apprater
         // Create the link to the google play store detail page
         final String marketLink = "market://details?id=" + packageName;
 
-        if (Apprater.shouldLog(context))
+        if (shouldLog())
         {            
             Log.i(Apprater.LOG_TAG, "Url to link for rating: " + marketLink);
         }
@@ -350,7 +362,7 @@ public class Apprater
                 }
 
                 // Mark as never ask for rating again (cause now it was done)
-                AppraterPreferences.markNeverRate(context);
+                preferences.storeRated();
                 
                 // Trigger the rating intent
                 Uri uri = Uri.parse(marketLink);
@@ -368,7 +380,7 @@ public class Apprater
                 }
                 
                 // Mark as to ask later again
-                AppraterPreferences.resetToRateLater(context);
+                preferences.storeToRateLater();
 
                 dialog.dismiss();
             }
@@ -382,7 +394,7 @@ public class Apprater
                 }
                 
                 // Mark as never ask for rating again
-                AppraterPreferences.markNeverRate(context);
+                preferences.storeRatingDeclined();
                 
                 dialog.cancel();
             }
@@ -393,10 +405,9 @@ public class Apprater
     /**
      * Check if the app rater component should verbose its logs.
      * 
-     * @param context The current activity context
      * @return Flag if logging is enabled.
      */
-    public static boolean shouldLog(Context context)
+    public boolean shouldLog()
     {
         boolean shouldLog = false;
 

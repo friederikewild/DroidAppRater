@@ -36,6 +36,7 @@ public class MainActivity extends Activity
 
     /** The instance of the background taks to read the logs */
     private AppRaterLogReader    mBackgroundTask;
+    private Apprater             appRater;
     /** The instance of a callback handler */
     private DemoAppraterCallback mDemoAppraterCallback;
 
@@ -49,10 +50,13 @@ public class MainActivity extends Activity
         this.setContentView(R.layout.layout_main);
 
         this.mDemoAppraterCallback = new DemoAppraterCallback();
+        appRater = new Apprater(this);
+        
+        // Register a callback listener. This step is optional
+        appRater.setAppraterCallback(mDemoAppraterCallback);
 
         // Let the DroidAppRater check on each creation if the rating dialog should be shown:
-//        Apprater.checkToShowRatingOnStart(this);
-        Apprater.checkToShowRatingOnStart(this, mDemoAppraterCallback);
+        appRater.checkToShowRatingOnStart();
     }
 
     /* (non-Javadoc)
@@ -63,9 +67,20 @@ public class MainActivity extends Activity
     {
         super.onResume();
 
+        // Ensure the context is reset after a possible before call of onPause
+        appRater.setContext(this);
+        
         updateLogging();
     }
 
+    @Override
+    protected void onPause()
+    {
+        // Invalidate context reference to not keep activity longer then necessary
+        appRater.invalidateContext();
+        super.onPause();
+    }
+    
     /* (non-Javadoc)
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
@@ -141,8 +156,7 @@ public class MainActivity extends Activity
     public void onButtonClick(View view)
     {
         // Let the DroidAppRater check on each positive event, if the rating dialog should be shown:
-//        Apprater.checkToShowRatingOnEvent(this);
-        Apprater.checkToShowRatingOnEvent(this, mDemoAppraterCallback);
+        appRater.checkToShowRatingOnEvent();
 
         updateLogging();
     }
