@@ -36,7 +36,7 @@ import android.util.Log;
  * 
  * @author Friederike Wild
  */
-public class Apprater
+public class AppRater
 {
     /** 
      * Meta key to configure the amount of app launches, till the rating dialog should be shown for the first time / next time after postponing.
@@ -83,10 +83,10 @@ public class Apprater
 
     private Context              context;
     /** The optional callback object to be noticed about the chosen dialog option. Past null if not interested. */
-    private AppraterCallback     callbackHandler                = null;
-    private AppraterPreferences  preferences;
+    private AppRaterCallback     callbackHandler                = null;
+    private AppRaterPreferences  preferences;
 
-    public Apprater(Context context)
+    public AppRater(Context context)
     {
         this.setContext(context);
     }
@@ -94,7 +94,7 @@ public class Apprater
     public void setContext(Context context)
     {
         this.context = context;
-        this.preferences = new AppraterPreferences(context, shouldLog());
+        this.preferences = new AppRaterPreferences(context, shouldLog());
     }
 
     public void invalidateContext()
@@ -103,7 +103,7 @@ public class Apprater
         this.preferences = null;
     }
 
-    public void setAppraterCallback(AppraterCallback callbackHandler)
+    public void setAppRaterCallback(AppRaterCallback callbackHandler)
     {
         this.callbackHandler = callbackHandler;
     }
@@ -164,7 +164,7 @@ public class Apprater
 
         if (shouldLog())
         {            
-            Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + launchBeforeRate + " launches.");
+            Log.i(AppRater.LOG_TAG, "Devmob AppRater configured to wait for " + launchBeforeRate + " launches.");
         }
 
         return launchBeforeRate;
@@ -181,7 +181,7 @@ public class Apprater
 
         if (shouldLog())
         {            
-            Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " days.");
+            Log.i(AppRater.LOG_TAG, "Devmob AppRater configured to wait for " + daysBeforeRate + " days.");
         }
 
         return daysBeforeRate;
@@ -198,7 +198,7 @@ public class Apprater
 
         if (shouldLog())
         {            
-            Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " positive events.");
+            Log.i(AppRater.LOG_TAG, "Devmob AppRater configured to wait for " + daysBeforeRate + " positive events.");
         }
 
         return daysBeforeRate;
@@ -247,7 +247,7 @@ public class Apprater
         // No rating case it was already dismissed or rated.
         if (preferences.isRatingRequestDeactivated())
         {
-            Log.i(Apprater.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on start.");
+            Log.i(AppRater.LOG_TAG, "AppRater configured to never request rating via dialog (reset after re-install of the app). Checked on start.");
             return false;
         }
 
@@ -258,7 +258,7 @@ public class Apprater
 
         if (shouldLog())
         {            
-            Log.i(Apprater.LOG_TAG, "Apprater comparison " + daysPastSinceStart + " past ? >= " + getConfigDaysBeforeRateCount());
+            Log.i(AppRater.LOG_TAG, "AppRater comparison " + daysPastSinceStart + " past ? >= " + getConfigDaysBeforeRateCount());
         }
 
         if (daysPastSinceStart < getConfigDaysBeforeRateCount())
@@ -288,7 +288,7 @@ public class Apprater
         // No rating case it was already dismissed or rated.
         if (preferences.isRatingRequestDeactivated())
         {
-            Log.i(Apprater.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on event.");
+            Log.i(AppRater.LOG_TAG, "AppRater configured to never request rating via dialog (reset after re-install of the app). Checked on event.");
             return false;
         }
 
@@ -339,7 +339,7 @@ public class Apprater
 
         if (shouldLog())
         {            
-            Log.i(Apprater.LOG_TAG, "Url to link for rating: " + marketLink);
+            Log.i(AppRater.LOG_TAG, "Url to link for rating: " + marketLink);
         }
 
         String title = context.getString(R.string.dialog_rate_title, appName);

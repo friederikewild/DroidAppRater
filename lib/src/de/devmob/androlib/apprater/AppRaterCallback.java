@@ -23,7 +23,7 @@ package de.devmob.androlib.apprater;
  * 
  * @author Friederike Wild
  */
-public interface AppraterCallback
+public interface AppRaterCallback
 {
     /**
      * Callback method when the user chose to not rate and be never asked again.

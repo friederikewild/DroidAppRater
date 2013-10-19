@@ -18,8 +18,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.devmob.androlib.apprater.AppraterCallback;
-import de.devmob.androlib.apprater.Apprater;
+import de.devmob.androlib.apprater.AppRaterCallback;
+import de.devmob.androlib.apprater.AppRater;
 
 /**
  * Simple main activity of the demo application to show the usage of the
@@ -36,7 +36,7 @@ public class MainActivity extends Activity
 
     /** The instance of the background taks to read the logs */
     private AppRaterLogReader    mBackgroundTask;
-    private Apprater             appRater;
+    private AppRater             appRater;
     /** The instance of a callback handler */
     private DemoAppraterCallback mDemoAppraterCallback;
 
@@ -50,10 +50,10 @@ public class MainActivity extends Activity
         this.setContentView(R.layout.layout_main);
 
         this.mDemoAppraterCallback = new DemoAppraterCallback();
-        appRater = new Apprater(this);
+        appRater = new AppRater(this);
         
         // Register a callback listener. This step is optional
-        appRater.setAppraterCallback(mDemoAppraterCallback);
+        appRater.setAppRaterCallback(mDemoAppraterCallback);
 
         // Let the DroidAppRater check on each creation if the rating dialog should be shown:
         appRater.checkToShowRatingOnStart();
@@ -200,7 +200,7 @@ public class MainActivity extends Activity
                 // Put up the logcat filtering command
                 StringBuilder baseCommandBuilder = new StringBuilder(); 
                 baseCommandBuilder.append("logcat -d -v raw ");
-                baseCommandBuilder.append(Apprater.LOG_TAG); // Filter only the used Library Logging Tag
+                baseCommandBuilder.append(AppRater.LOG_TAG); // Filter only the used Library Logging Tag
                 baseCommandBuilder.append(":I"); // Filter only the info debug level
                 baseCommandBuilder.append(" MyApp:D "); // Info for my app
                 baseCommandBuilder.append(" *:S "); // Silence others
@@ -260,7 +260,7 @@ public class MainActivity extends Activity
      * 
      * @author Friederike Wild
      */
-    public class DemoAppraterCallback implements AppraterCallback
+    public class DemoAppraterCallback implements AppRaterCallback
     {
         /* (non-Javadoc)
          * @see de.devmob.androlib.apprater.AppraterCallback#processNever()

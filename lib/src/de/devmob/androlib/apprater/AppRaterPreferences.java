@@ -31,7 +31,7 @@ import android.util.Log;
  * 
  * @author Friederike Wild
  */
-public class AppraterPreferences
+public class AppRaterPreferences
 {
     /** The key to the shared preferences that handles storage of the app rater status quo. */
     private static final String KEY_PREFERENCES       = "de.devmob.APPRATER";
@@ -50,7 +50,7 @@ public class AppraterPreferences
     private SharedPreferences preferences;
     private boolean verbose;
 
-    public AppraterPreferences(Context context, boolean verbose)
+    public AppRaterPreferences(Context context, boolean verbose)
     {
         // Get the shared preferences that hold the app rater usage status.
         int mode = Activity.MODE_PRIVATE;
@@ -120,7 +120,7 @@ public class AppraterPreferences
 
         if (this.verbose)
         {            
-            Log.i(Apprater.LOG_TAG, "Current count open: " + count);
+            Log.i(AppRater.LOG_TAG, "Current count open: " + count);
         }
 
         // Store updated count
@@ -151,7 +151,7 @@ public class AppraterPreferences
 
         if (this.verbose)
         {            
-            Log.i(Apprater.LOG_TAG, "Current count events: " + count);
+            Log.i(AppRater.LOG_TAG, "Current count events: " + count);
         }
 
         // Store updated count
@@ -176,7 +176,7 @@ public class AppraterPreferences
 
         if (this.verbose)
         {            
-            Log.i(Apprater.LOG_TAG, "Info: Reset all stored preferences!");
+            Log.i(AppRater.LOG_TAG, "Info: Reset all stored preferences!");
         }
     }
 
@@ -192,7 +192,7 @@ public class AppraterPreferences
 
         if (this.verbose)
         {            
-            Log.i(Apprater.LOG_TAG, "Info: Marked as rated!");
+            Log.i(AppRater.LOG_TAG, "Info: Marked as rated!");
         }
     }
 
@@ -212,7 +212,7 @@ public class AppraterPreferences
 
         if (this.verbose)
         {            
-            Log.i(Apprater.LOG_TAG, "Info: Marked to ask later for rating!");
+            Log.i(AppRater.LOG_TAG, "Info: Marked to ask later for rating!");
         }
     }
 
@@ -234,7 +234,7 @@ public class AppraterPreferences
 
         if (this.verbose)
         {            
-            Log.i(Apprater.LOG_TAG, "Info: Marked to never show rating dialog again!");
+            Log.i(AppRater.LOG_TAG, "Info: Marked to never show rating dialog again!");
         }
     }
 }
