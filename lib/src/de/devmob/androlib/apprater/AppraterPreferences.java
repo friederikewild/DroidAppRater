@@ -34,16 +34,18 @@ import android.util.Log;
 public class AppraterPreferences
 {
     /** The key to the shared preferences that handles storage of the app rater status quo. */
-    private static final String KEY_PREFERENCES       = "de.devmob.APPRATER";
+    private static final String KEY_PREFERENCES         = "de.devmob.APPRATER";
 
     /** Key to store the date to compare how long the user has the app. */
-    private static final String PREF_LONG_START_DATE  = "PREF_LONG_START_DATE";
-    /** Key to store how often the app was opend */
-    private static final String PREF_INT_COUNT_OPEN   = "PREF_INT_COUNT_OPEN";
+    private static final String PREF_LONG_START_DATE    = "PREF_LONG_START_DATE";
+    /** Key to store how often the app was opened */
+    private static final String PREF_INT_COUNT_OPEN     = "PREF_INT_COUNT_OPEN";
     /** Key to store how often the positive event was triggered. */
-    private static final String PREF_INT_COUNT_EVENTS = "PREF_INT_COUNT_EVENTS";
-    /** Key to store if app rating was done or denied. */
-    private static final String PREF_BOOL_NEVERRATE   = "PREF_BOOL_NEVERRATE";
+    private static final String PREF_INT_COUNT_EVENTS   = "PREF_INT_COUNT_EVENTS";
+    /** Key to store if app rating was done for this version */
+    private static final String PREF_BOOL_RATED_VERSION = "PREF_BOOL_RATED_VERSION";
+    /** Key to store if app rating was denied */
+    private static final String PREF_BOOL_NEVERRATE     = "PREF_BOOL_NEVERRATE";
 
     /**
      * Util method to get the shared preferences that hold the app rater usage status.
@@ -63,12 +65,26 @@ public class AppraterPreferences
      * @param context
      * @return
      */
-    public static boolean isNeverShowApprater(Context context)
+    public static boolean isRatingRequestDeactivated(Context context)
     {
         SharedPreferences prefs = getPreferences(context);
-        return prefs.getBoolean(PREF_BOOL_NEVERRATE, false);
+        boolean userRated = prefs.getBoolean(PREF_BOOL_RATED_VERSION, false);
+        boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_NEVERRATE, false);
+        return userRated || userChoseNeverRate;
     }
 
+    public static void storeRated(Context context)
+    {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putBoolean(PREF_BOOL_RATED_VERSION, true);
+        editor.commit();
+
+        if (Apprater.shouldLog(context))
+        {            
+            Log.i(Apprater.LOG_TAG, "Info: Marked as rated!");
+        }
+    }
+    
     /**
      * Reset the app rating counter and settings to automatically ask for rating later again. 
      * 
@@ -85,9 +101,9 @@ public class AppraterPreferences
 
         editor.commit();
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Info: Marked to ask later for rating!");
+            Log.i(Apprater.LOG_TAG, "Info: Marked to ask later for rating!");
         }
     }
 
@@ -109,9 +125,9 @@ public class AppraterPreferences
         editor.putBoolean(PREF_BOOL_NEVERRATE, true);
         editor.commit();
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Info: Marked to never show rating dialog again!");
+            Log.i(Apprater.LOG_TAG, "Info: Marked to never show rating dialog again!");
         }
     }
 
@@ -157,9 +173,9 @@ public class AppraterPreferences
             count++;
         }
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Current count open: " + count);
+            Log.i(Apprater.LOG_TAG, "Current count open: " + count);
         }
 
         // Store updated count
@@ -189,9 +205,9 @@ public class AppraterPreferences
             count++;
         }
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Current count events: " + count);
+            Log.i(Apprater.LOG_TAG, "Current count events: " + count);
         }
 
         // Store updated count

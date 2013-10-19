@@ -37,7 +37,7 @@ import android.util.Log;
  * 
  * @author Friederike Wild
  */
-public class AppraterUtils
+public class Apprater
 {
     /** 
      * Meta key to configure the amount of app launches, till the rating dialog should be shown for the first time / next time after postponing.
@@ -142,9 +142,9 @@ public class AppraterUtils
     {
         int launchBeforeRate = getConfigurationIntOrDefaultValue(context, META_CONFIG_LAUNCH_BEFORE_RATE, DEFAULT_LAUNCH_BEFORE_RATE);
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Devmob Apprater configured to wait for " + launchBeforeRate + " launches.");
+            Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + launchBeforeRate + " launches.");
         }
 
         return launchBeforeRate;
@@ -160,9 +160,9 @@ public class AppraterUtils
     {
         int daysBeforeRate = getConfigurationIntOrDefaultValue(context, META_CONFIG_DAYS_BEFORE_RATE, DEFAULT_DAYS_BEFORE_RATE);
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " days.");
+            Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " days.");
         }
 
         return daysBeforeRate;
@@ -178,9 +178,9 @@ public class AppraterUtils
     {
         int daysBeforeRate = getConfigurationIntOrDefaultValue(context, META_CONFIG_EVENTS_BEFORE_RATE, DEFAULT_EVENTS_BEFORE_RATE);
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " positive events.");
+            Log.i(Apprater.LOG_TAG, "Devmob Apprater configured to wait for " + daysBeforeRate + " positive events.");
         }
 
         return daysBeforeRate;
@@ -229,9 +229,9 @@ public class AppraterUtils
     private static boolean shouldAppShowRatingOnStart(Context context)
     {
         // No rating case it was already dismissed or rated.
-        if (AppraterPreferences.isNeverShowApprater(context))
+        if (AppraterPreferences.isRatingRequestDeactivated(context))
         {
-            Log.i(AppraterUtils.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on start.");
+            Log.i(Apprater.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on start.");
             return false;
         }
 
@@ -240,9 +240,9 @@ public class AppraterUtils
         long storedTime = AppraterPreferences.getStoredStartDate(context);
         long daysPastSinceStart= ((currentTime - storedTime) / (1000 * 60 * 60 * 24));
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Apprater comparison " + daysPastSinceStart + " past ? >= " + getConfigDaysBeforeRateCount(context));
+            Log.i(Apprater.LOG_TAG, "Apprater comparison " + daysPastSinceStart + " past ? >= " + getConfigDaysBeforeRateCount(context));
         }
 
         if (daysPastSinceStart < getConfigDaysBeforeRateCount(context))
@@ -271,9 +271,9 @@ public class AppraterUtils
     private static boolean shouldAppShowRatingOnEvent(Context context)
     {
         // No rating case it was already dismissed or rated.
-        if (AppraterPreferences.isNeverShowApprater(context))
+        if (AppraterPreferences.isRatingRequestDeactivated(context))
         {
-            Log.i(AppraterUtils.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on event.");
+            Log.i(Apprater.LOG_TAG, "Apprater configured to never request rating via dialog (reset after re-install of the app). Checked on event.");
             return false;
         }
 
@@ -325,9 +325,9 @@ public class AppraterUtils
         // Create the link to the google play store detail page
         final String marketLink = "market://details?id=" + packageName;
 
-        if (AppraterUtils.shouldLog(context))
+        if (Apprater.shouldLog(context))
         {            
-            Log.i(AppraterUtils.LOG_TAG, "Url to link for rating: " + marketLink);
+            Log.i(Apprater.LOG_TAG, "Url to link for rating: " + marketLink);
         }
 
         String title = context.getString(R.string.dialog_rate_title, appName);

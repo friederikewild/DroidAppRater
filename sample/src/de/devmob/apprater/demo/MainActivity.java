@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.devmob.androlib.apprater.AppraterCallback;
-import de.devmob.androlib.apprater.AppraterUtils;
+import de.devmob.androlib.apprater.Apprater;
 
 /**
  * Simple main activity of the demo application to show the usage of the
@@ -51,8 +51,8 @@ public class MainActivity extends Activity
         this.mDemoAppraterCallback = new DemoAppraterCallback();
 
         // Let the DroidAppRater check on each creation if the rating dialog should be shown:
-//        AppraterUtils.checkToShowRatingOnStart(this);
-        AppraterUtils.checkToShowRatingOnStart(this, mDemoAppraterCallback);
+//        Apprater.checkToShowRatingOnStart(this);
+        Apprater.checkToShowRatingOnStart(this, mDemoAppraterCallback);
     }
 
     /* (non-Javadoc)
@@ -141,8 +141,8 @@ public class MainActivity extends Activity
     public void onButtonClick(View view)
     {
         // Let the DroidAppRater check on each positive event, if the rating dialog should be shown:
-//        AppraterUtils.checkToShowRatingOnEvent(this);
-        AppraterUtils.checkToShowRatingOnEvent(this, mDemoAppraterCallback);
+//        Apprater.checkToShowRatingOnEvent(this);
+        Apprater.checkToShowRatingOnEvent(this, mDemoAppraterCallback);
 
         updateLogging();
     }
@@ -179,14 +179,14 @@ public class MainActivity extends Activity
             try
             {
                 // Put up the logcat filtering command
-                StringBuffer baseCommandBuffer = new StringBuffer(); 
-                baseCommandBuffer.append("logcat -d -v raw ");
-                baseCommandBuffer.append(AppraterUtils.LOG_TAG); // Filter only the used Library Logging Tag
-                baseCommandBuffer.append(":I"); // Filter only the info debug level
-                baseCommandBuffer.append(" MyApp:D "); // Info for my app
-                baseCommandBuffer.append(" *:S "); // Silence others
+                StringBuilder baseCommandBuilder = new StringBuilder(); 
+                baseCommandBuilder.append("logcat -d -v raw ");
+                baseCommandBuilder.append(Apprater.LOG_TAG); // Filter only the used Library Logging Tag
+                baseCommandBuilder.append(":I"); // Filter only the info debug level
+                baseCommandBuilder.append(" MyApp:D "); // Info for my app
+                baseCommandBuilder.append(" *:S "); // Silence others
                 
-                Process process = Runtime.getRuntime().exec(baseCommandBuffer.toString());
+                Process process = Runtime.getRuntime().exec(baseCommandBuilder.toString());
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
