@@ -244,7 +244,7 @@ public class AppRater
      */
     private boolean shouldAppShowRatingOnStart()
     {
-        // Increase count (except when ratingn was declined before)
+        // Increase count (except when rating was declined before)
         if (!preferences.isRatingRequestDeclined())
         {
             preferences.increaseCountOpened();
@@ -291,7 +291,7 @@ public class AppRater
      */
     private boolean shouldAppShowRatingOnEvent()
     {
-        // Increase count (except when ratingn was declined before)
+        // Increase count (except when rating was declined before)
         if (!preferences.isRatingRequestDeclined())
         {
             preferences.increaseCountEvents();
