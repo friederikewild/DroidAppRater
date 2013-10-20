@@ -244,6 +244,12 @@ public class AppRater
      */
     private boolean shouldAppShowRatingOnStart()
     {
+        // Increase count (except when ratingn was declined before)
+        if (!preferences.isRatingRequestDeclined())
+        {
+            preferences.increaseCountOpened();
+        }
+
         // No rating case it was already dismissed or rated.
         if (preferences.isRatingRequestDeactivated())
         {
@@ -267,7 +273,7 @@ public class AppRater
         }
 
         // Check the usage
-        int countOpened = preferences.getCountOpened(true);
+        int countOpened = preferences.getCountOpened();
         if (countOpened % getConfigLaunchBeforeRateCount() == 0)
         {
             return true;
@@ -285,6 +291,12 @@ public class AppRater
      */
     private boolean shouldAppShowRatingOnEvent()
     {
+        // Increase count (except when ratingn was declined before)
+        if (!preferences.isRatingRequestDeclined())
+        {
+            preferences.increaseCountEvents();
+        }
+        
         // No rating case it was already dismissed or rated.
         if (preferences.isRatingRequestDeactivated())
         {
@@ -293,7 +305,7 @@ public class AppRater
         }
 
         // Check the usage
-        int countEvents = preferences.getCountEvents(true);
+        int countEvents = preferences.getCountEvents();
         if (countEvents % getConfigEventsBeforeRateCount() == 0)
         {
             return true;

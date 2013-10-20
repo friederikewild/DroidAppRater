@@ -71,6 +71,11 @@ public class AppRaterPreferences
         return userRated || userChoseNeverRate;
     }
 
+    /**
+     * Check if rating was already denied. 
+     * 
+     * @return
+     */
     public boolean isRatingRequestDeclined()
     {
         SharedPreferences prefs = preferences;
@@ -101,64 +106,66 @@ public class AppRaterPreferences
     }
 
     /**
-     * Get the current count of opening the application.
-     * Calling this method increases the counter before returning if the increase parameter is true.
-     * 
-     * @param increase Flag if the counter should be increased before returning.
-     * @return The count of new app starts.
+     * Calling this method increases the count of times the app was opened.
      */
-    public int getCountOpened(boolean increase)
+    public void increaseCountOpened()
     {
-        SharedPreferences prefs = preferences;
-        int count = prefs.getInt(PREF_INT_COUNT_OPEN, 0);
+        int count = getCountOpened();
 
-        if (increase)
-        {
-            // Increase the counter
-            count++;
-        }
-
-        if (this.verbose)
-        {            
-            Log.i(AppRater.LOG_TAG, "Current count open: " + count);
-        }
+        // Increase the counter
+        count++;
 
         // Store updated count
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(PREF_INT_COUNT_OPEN, count);
         editor.commit();
 
+        if (this.verbose)
+        {            
+            Log.i(AppRater.LOG_TAG, "Current count open: " + count);
+        }
+    }
+
+    /**
+     * Get the current count of opening the application.
+     * 
+     * @return The count of new app starts.
+     */
+    public int getCountOpened()
+    {
+        int count = preferences.getInt(PREF_INT_COUNT_OPEN, 0);
         return count;
     }
 
     /**
-     * Get the current count of positive events logged in the application.
-     * Calling this method increases the counter before returning if the increase parameter is true.
-     * 
-     * @param increase Flag if the counter should be increased before returning.
-     * @return The count of positive events.
+     * Calling this method increases the count of events.
      */
-    public int getCountEvents(boolean increase)
+    public void increaseCountEvents()
     {
-        SharedPreferences prefs = preferences;
-        int count = prefs.getInt(PREF_INT_COUNT_EVENTS, 0);
+        int count = getCountEvents();
 
-        if (increase)
-        {
-            // Increase the counter
-            count++;
-        }
-
-        if (this.verbose)
-        {            
-            Log.i(AppRater.LOG_TAG, "Current count events: " + count);
-        }
+        // Increase the counter
+        count++;
 
         // Store updated count
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(PREF_INT_COUNT_EVENTS, count);
         editor.commit();
 
+        if (this.verbose)
+        {            
+            Log.i(AppRater.LOG_TAG, "Current count events: " + count);
+        }
+    }
+
+    /**
+     * Get the current count of positive events logged in the application.
+     * 
+     * @return The count of positive events.
+     */
+    public int getCountEvents()
+    {
+        int count = preferences.getInt(PREF_INT_COUNT_EVENTS, 0);
         return count;
     }
 
