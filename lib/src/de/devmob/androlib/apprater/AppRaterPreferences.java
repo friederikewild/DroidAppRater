@@ -43,9 +43,9 @@ public class AppRaterPreferences
     /** Key to store how often the positive event was triggered. */
     private static final String PREF_INT_COUNT_EVENTS = "PREF_INT_COUNT_EVENTS";
     /** Key to store if app rating was done for this version */
-    private static final String PREF_BOOL_RATED       = "PREF_BOOL";
-    /** Key to store if app rating was denied */
-    private static final String PREF_BOOL_NEVERRATE   = "PREF_BOOL_NEVERRATE";
+    private static final String PREF_BOOL_RATED       = "PREF_BOOL_RATED";
+    /** Key to store if app rating was declined */
+    private static final String PREF_BOOL_DECLINED    = "PREF_BOOL_DECLINED";
 
     private SharedPreferences preferences;
     private boolean verbose;
@@ -67,7 +67,7 @@ public class AppRaterPreferences
     {
         SharedPreferences prefs = preferences;
         boolean userRated = prefs.getBoolean(PREF_BOOL_RATED, false);
-        boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_NEVERRATE, false);
+        boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_DECLINED, false);
         return userRated || userChoseNeverRate;
     }
 
@@ -79,7 +79,7 @@ public class AppRaterPreferences
     public boolean isRatingRequestDeclined()
     {
         SharedPreferences prefs = preferences;
-        boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_NEVERRATE, false);
+        boolean userChoseNeverRate = prefs.getBoolean(PREF_BOOL_DECLINED, false);
         return userChoseNeverRate;
     }
 
@@ -179,7 +179,7 @@ public class AppRaterPreferences
         editor.remove(PREF_INT_COUNT_EVENTS);
         editor.remove(PREF_LONG_START_DATE);
         editor.remove(PREF_BOOL_RATED);
-        editor.remove(PREF_BOOL_NEVERRATE);
+        editor.remove(PREF_BOOL_DECLINED);
         editor.commit();
 
         if (this.verbose)
@@ -237,7 +237,7 @@ public class AppRaterPreferences
         editor.remove(PREF_LONG_START_DATE);
 
         // Store to never ask for rating again
-        editor.putBoolean(PREF_BOOL_NEVERRATE, true);
+        editor.putBoolean(PREF_BOOL_DECLINED, true);
         editor.commit();
 
         if (this.verbose)
