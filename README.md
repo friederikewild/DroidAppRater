@@ -9,6 +9,7 @@ As fallback or when there are no defined happy moments, the rating dialog will s
 
 The DroidAppRater is inspired by the Appirater by Arash Payan [Appirater for iPhone](https://github.com/arashpayan/appirater). Find out more about his thoughts about including a rating dialog at [his blog](http://arashpayan.com/blog/2009/09/07/presenting-appirater).
 
+![Logs Screenshot](raw/screenshot_logs.png "Logs Screenshot") ![Dialog Screenshot](raw/screenshot_dialog.png "Dialog Screenshot")
 
 Project overview
 ----------------
@@ -31,14 +32,15 @@ Choose one or both of the following moments to have the DroidAppRater check if t
 
 * `onCreate` method of your main `Activity` class
 ```java
+appRater = new AppRater(this);
 // Let the DroidAppRater check on each creation if the rating dialog should be shown:
-AppraterUtils.checkToShowRatingOnStart(this);
+appRater.checkToShowRatingOnStart();
 ```
 
 * At any method (on the UI Thread) that is a 'happy' event
 ```java
 // Let the DroidAppRater check on each positive event, if the rating dialog should be shown:
-AppraterUtils.checkToShowRatingOnEvent(this);
+appRater.checkToShowRatingOnEvent();
 ```
 
 
@@ -74,7 +76,7 @@ All three parameters are needed to be fulfilled to show the rating dialog for th
 
 Sometimes getting the dialog is not enough for your needs. It may for example be of interest to you to log the users response to the rating dialog to included analytic tools.
 
-To be able to do so, one can register a listener using the interface `AppraterCallback` with `AppraterUtils.checkToShowRatingOnStart` and `AppraterUtils.checkToShowRatingOnEvent`. This is demonstrated in the demo application.
+To be able to do so, one can register a listener using the interface `AppRaterCallback` with `appRater.setAppRaterCallback()`. This is demonstrated in the demo application.
 
 
 Developed By
