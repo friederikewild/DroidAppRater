@@ -113,9 +113,12 @@ public class AppRater
      */
     public void checkToShowRatingOnStart()
     {
-        if (shouldAppShowRatingOnStart() && ENABLE_APPRATER)
+        if (isReadyForUsage())
         {
-            showAppraterDialog();
+            if (shouldAppShowRatingOnStart() && ENABLE_APPRATER)
+            {
+                showAppraterDialog();
+            }
         }
     }
 
@@ -126,9 +129,12 @@ public class AppRater
      */
     public void checkToShowRatingOnEvent()
     {
-        if (shouldAppShowRatingOnEvent() && ENABLE_APPRATER)
+        if (isReadyForUsage())
         {
-            showAppraterDialog();
+            if (shouldAppShowRatingOnEvent() && ENABLE_APPRATER)
+            {
+                showAppraterDialog();
+            }
         }
     }
 
@@ -138,7 +144,10 @@ public class AppRater
      */
     public void resetAllStoredPreferences()
     {
-        preferences.reset();
+        if (isReadyForUsage())
+        {
+            preferences.reset();
+        }
     }
 
     /**
@@ -147,9 +156,12 @@ public class AppRater
      */
     public void resetVotingsIfNotRatingDeclined()
     {
-        if (!preferences.isRatingRequestDeclined())
+        if (isReadyForUsage())
         {
-            resetAllStoredPreferences();
+            if (!preferences.isRatingRequestDeclined())
+            {
+                resetAllStoredPreferences();
+            }
         }
     }
 
@@ -202,6 +214,11 @@ public class AppRater
         }
 
         return daysBeforeRate;
+    }
+
+    private boolean isReadyForUsage()
+    {
+        return this.context != null && this.preferences != null;
     }
 
     /**
