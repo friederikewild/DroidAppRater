@@ -97,8 +97,9 @@ public class AppRaterPreferences
         
         if (storedDate == 0)
         {
+            storedDate = System.currentTimeMillis();
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong(PREF_LONG_START_DATE, System.currentTimeMillis());
+            editor.putLong(PREF_LONG_START_DATE, storedDate);
             editor.commit();
         }
 
