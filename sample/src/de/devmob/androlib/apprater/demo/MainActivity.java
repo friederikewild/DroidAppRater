@@ -71,14 +71,19 @@ public class MainActivity extends Activity
         // Ensure the context is reset after a possible before call of onPause
         appRater.setContext(this);
 
+        updateIntroRaterInformation();
+        
+        updateLogging();
+    }
+
+    private void updateIntroRaterInformation()
+    {
         // Fetch the configured parameters for demonstration output
         String events = String.valueOf(appRater.getConfigEventsBeforeRateCount());
         String days = String.valueOf(appRater.getConfigDaysBeforeRateCount());
         String launches = String.valueOf(appRater.getConfigLaunchBeforeRateCount());
         String intro = getString(R.string.text_hello, events, days, launches);
         ((TextView)this.findViewById(R.id.textIntro)).setText(intro);
-        
-        updateLogging();
     }
 
     @Override
