@@ -1,7 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_margin="@dimen/standard_border"
     tools:context=".MainActivity" >
 
     <TextView
@@ -9,12 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/standard_border"
         
-        android:layout_margin="10dp"
-        
-        android:gravity="center_horizontal"
+        android:textSize="@dimen/font_size_text"
         android:text="@string/text_hello"
         />
 
@@ -23,11 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/textIntro"
+        android:layout_margin="@dimen/standard_border"
+        android:padding="@dimen/standard_border"
         
-        android:layout_margin="20dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_background"
         
+        android:textSize="@dimen/font_size_text"
         android:onClick="onButtonClick"
         android:text="@string/button_event"
         />
@@ -37,32 +40,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         
-        android:layout_below="@id/buttonEvent"
-        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/standard_border"
         
-        android:layout_margin="10dp"
-        
-        android:gravity="center_horizontal"
+        android:textSize="@dimen/font_size_text"
+        android:textStyle="bold"
         android:text="@string/text_sub"
         />
 
-        <TextView
-	        android:id="@+id/textLog"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        
-	        android:layout_below="@id/textSub"
-	        android:layout_alignParentBottom="true"
-	        
-	        android:gravity="left"
-	        
-	        android:layout_margin="10dp"
-	        
-	        android:textSize="14sp"
-	        
-	        android:lineSpacingExtra="2sp"
-	        
-	        android:text=""
-	        />
+    <TextView
+     android:id="@+id/textLog"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     
+     android:gravity="left"
+     
+     android:layout_margin="@dimen/standard_border"
+     
+     android:textSize="@dimen/font_size_log"
+     
+     android:lineSpacingExtra="@dimen/log_line_space"
+     />
 
-</RelativeLayout>
+</LinearLayout>

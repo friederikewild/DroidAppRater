@@ -3,8 +3,8 @@
     <string name="app_name">DroidAppRaterDemo</string>
     <string name="title_activity_main">Rating Demo</string>
 
-    <string name="text_hello">Trigger rating requester after x events / days of usage / launches.</string>
-    <string name="text_sub">Verbose logging on LogCat with Tag \'devmob_apprater\'</string>
+    <string name="text_hello">Trigger rating requester after %1$s events, %2$s days of usage or %3$s launches.</string>
+    <string name="text_sub">Verbose logging with Tag \'devmob_apprater\'</string>
     <string name="button_event">Trigger event</string>
 
     <string name="infoOnVoting">Callback - User is rating now.</string>

@@ -1,4 +1,4 @@
-package de.devmob.apprater.demo;
+package de.devmob.androlib.apprater.demo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.devmob.androlib.apprater.AppRaterCallback;
 import de.devmob.androlib.apprater.AppRater;
+import de.devmob.androlib.apprater.demo.R;
 
 /**
  * Simple main activity of the demo application to show the usage of the
@@ -69,6 +70,13 @@ public class MainActivity extends Activity
 
         // Ensure the context is reset after a possible before call of onPause
         appRater.setContext(this);
+
+        // Fetch the configured parameters for demonstration output
+        String events = String.valueOf(appRater.getConfigEventsBeforeRateCount());
+        String days = String.valueOf(appRater.getConfigDaysBeforeRateCount());
+        String launches = String.valueOf(appRater.getConfigLaunchBeforeRateCount());
+        String intro = getString(R.string.text_hello, events, days, launches);
+        ((TextView)this.findViewById(R.id.textIntro)).setText(intro);
         
         updateLogging();
     }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE (fwild): Lint currently has a bug and doesn't notice dimensions used only in layouts to be used at all. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
+    <dimen name="font_size_text">14sp</dimen>
+    <dimen name="font_size_log">12sp</dimen>
+    <dimen name="log_line_space">5sp</dimen>
+    
+    <dimen name="standard_border">5dp</dimen>
+    
+    <dimen name="corner_radius">3dp</dimen>
+    <dimen name="edge_stroke">2dp</dimen>
+    
+
+</resources>

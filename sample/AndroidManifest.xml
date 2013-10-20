@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.devmob.apprater.demo"
+    package="de.devmob.androlib.apprater.demo"
     android:installLocation="preferExternal"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -27,7 +27,7 @@
         <meta-data android:name="de.devmob.verbose" android:value="true" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="de.devmob.androlib.apprater.demo.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
