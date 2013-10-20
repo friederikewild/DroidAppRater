@@ -158,7 +158,7 @@ public class AppRater
      * 
      * @return
      */
-    private int getConfigLaunchBeforeRateCount()
+    public int getConfigLaunchBeforeRateCount()
     {
         int launchBeforeRate = getConfigurationIntOrDefaultValue(META_CONFIG_LAUNCH_BEFORE_RATE, DEFAULT_LAUNCH_BEFORE_RATE);
 
@@ -175,7 +175,7 @@ public class AppRater
      * 
      * @return
      */
-    private int getConfigDaysBeforeRateCount()
+    public int getConfigDaysBeforeRateCount()
     {
         int daysBeforeRate = getConfigurationIntOrDefaultValue(META_CONFIG_DAYS_BEFORE_RATE, DEFAULT_DAYS_BEFORE_RATE);
 
@@ -192,7 +192,7 @@ public class AppRater
      * 
      * @return
      */
-    private int getConfigEventsBeforeRateCount()
+    public int getConfigEventsBeforeRateCount()
     {
         int daysBeforeRate = getConfigurationIntOrDefaultValue(META_CONFIG_EVENTS_BEFORE_RATE, DEFAULT_EVENTS_BEFORE_RATE);
 
