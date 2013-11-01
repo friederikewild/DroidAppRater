@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Friederike Wild <friederike.wild@devmob.de>
+ * Copyright (C) 2012-2013 Friederike Wild <friederike.wild@devmob.de>
  * Created 06.05.2012
  * 
  * https://github.com/friederikewild/DroidAppRater
