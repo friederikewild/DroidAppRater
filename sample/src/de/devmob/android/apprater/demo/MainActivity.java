@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.devmob.androlib.apprater.demo;
+package de.devmob.android.apprater.demo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,9 +36,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.devmob.androlib.apprater.AppRaterCallback;
-import de.devmob.androlib.apprater.AppRater;
-import de.devmob.androlib.apprater.demo.R;
+import de.devmob.android.apprater.AppRaterCallback;
+import de.devmob.android.apprater.AppRater;
+import de.devmob.android.apprater.demo.R;
 
 /**
  * Simple main activity of the demo application to show the usage of the
@@ -294,7 +294,7 @@ public class MainActivity extends Activity
     public class DemoAppraterCallback implements AppRaterCallback
     {
         /* (non-Javadoc)
-         * @see de.devmob.androlib.apprater.AppraterCallback#processNever()
+         * @see de.devmob.android.apprater.AppraterCallback#processNever()
          */
         @Override
         public void processNever()
@@ -305,7 +305,7 @@ public class MainActivity extends Activity
         }
     
         /* (non-Javadoc)
-         * @see de.devmob.androlib.apprater.AppraterCallback#processRate()
+         * @see de.devmob.android.apprater.AppraterCallback#processRate()
          */
         @Override
         public void processRate()
@@ -316,7 +316,7 @@ public class MainActivity extends Activity
         }
     
         /* (non-Javadoc)
-         * @see de.devmob.androlib.apprater.AppraterCallback#processRemindMe()
+         * @see de.devmob.android.apprater.AppraterCallback#processRemindMe()
          */
         @Override
         public void processRemindMe()

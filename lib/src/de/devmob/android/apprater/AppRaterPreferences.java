@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.devmob.androlib.apprater;
+package de.devmob.android.apprater;
 
 import android.app.Activity;
 import android.content.Context;

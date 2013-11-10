@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.devmob.androlib.apprater.demo"
+    package="de.devmob.android.apprater.demo"
     android:installLocation="preferExternal"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <!-- Define the supported android versions -->
-    <uses-sdk android:targetSdkVersion="17" android:minSdkVersion="8" />
+    <uses-sdk android:targetSdkVersion="19" android:minSdkVersion="8" />
 
     <!-- Define the needed permissions. Used to show the app rater lib logs inside the app. -->
     <uses-permission android:name="android.permission.READ_LOGS" />
@@ -27,7 +27,7 @@
         <meta-data android:name="de.devmob.verbose" android:value="true" />
 
         <activity
-            android:name="de.devmob.androlib.apprater.demo.MainActivity"
+            android:name="de.devmob.android.apprater.demo.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
