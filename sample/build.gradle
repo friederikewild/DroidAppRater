@@ -35,7 +35,7 @@ android {
     }
 
     defaultConfig {
-        packageName "de.devmob.android.apprater.demo"
+        packageName project.DEMO
         minSdkVersion 8
         targetSdkVersion 19
         versionName project.VERSION_NAME
