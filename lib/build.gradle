@@ -4,11 +4,10 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile 'com.android.support:support-v4:18.0.+'
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 14
     buildToolsVersion "18.1.1"
     compileOptions.encoding "UTF-8"
 
@@ -32,8 +31,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 3
-        targetSdkVersion 19
+        minSdkVersion 7
+        targetSdkVersion 17
         versionName project.VERSION_NAME
         versionCode Integer.parseInt(project.VERSION_CODE)
     }
